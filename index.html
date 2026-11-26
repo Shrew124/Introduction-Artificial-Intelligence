@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="description" content="배달 음식 비용을 공정하게 나누고 정산 메시지를 만들어 보세요." />
+  <title>한끼정산 · 배달 정산 계산기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="한끼정산 홈"><span class="brand-mark">h</span><span>한끼정산</span></a>
+      <span class="privacy"><span class="privacy-dot"></span>로그인 없이 바로 사용</span>
+    </header>
+
+    <section class="intro" id="top">
+      <div class="eyebrow"><span class="eyebrow-icon">✳</span> 배달 정산, 깔끔하게</div>
+      <h1>얼마씩 낼지,<br /><span>한 번에 정리해요.</span></h1>
+      <p>메뉴 금액과 배달비를 입력하면<br class="mobile-break" /> 각자 정산 금액을 바로 계산해 드려요.</p>
+      <div class="intro-meta"><span>01 <i></i> 참여자와 메뉴</span><span>02 <i></i> 비용 나누기</span><span>03 <i></i> 메시지 복사</span></div>
+    </section>
+
+    <div class="workspace">
+      <div class="main-column">
+        <section class="panel participants-panel" aria-labelledby="participants-title">
+          <div class="section-heading">
+            <div class="step-label"><span>01</span> 주문 내역</div>
+            <span class="count-pill" id="people-count">3명</span>
+          </div>
+          <div class="heading-row"><div><h2 id="participants-title">누가 같이 먹나요?</h2><p>이름과 각자 메뉴 금액을 적어주세요.</p></div></div>
+          <div class="participant-list" id="participant-list"></div>
+          <button type="button" class="add-button" id="add-person"><span>＋</span> 참여자 추가</button>
+          <div class="food-total"><span><span class="total-icon">₩</span> 전체 메뉴 금액</span><strong id="food-total">0원</strong></div>
+          <div class="notice error-notice" id="validation-notice" role="alert" hidden></div>
+        </section>
+
+        <section class="panel costs-panel" aria-labelledby="costs-title">
+          <div class="section-heading"><div class="step-label"><span>02</span> 추가 비용</div><span class="optional-label">필요한 항목만 입력</span></div>
+          <div class="heading-row"><div><h2 id="costs-title">함께 나눌 비용</h2><p>배달비와 할인 금액을 입력해 주세요.</p></div></div>
+          <div class="cost-fields">
+            <label class="field"><span>배달비</span><span class="input-wrap"><input id="delivery-fee" inputmode="numeric" type="text" value="2,500" aria-label="배달비" /><span>원</span></span></label>
+            <label class="field"><span>할인 금액</span><span class="input-wrap"><input id="discount" inputmode="numeric" type="text" value="3,000" aria-label="할인 금액" /><span>원</span></span></label>
+          </div>
+          <div class="split-label"><span>비용 분할 기준</span><span class="hint">배달비와 할인을 같은 기준으로 나눠요</span></div>
+          <div class="segmented" role="group" aria-label="비용 분할 기준">
+            <button type="button" class="segment active" data-mode="equal" aria-pressed="true"><span class="segment-icon">↔</span><span>균등 분할<small>모두 똑같이</small></span></button>
+            <button type="button" class="segment" data-mode="proportional" aria-pressed="false"><span class="segment-icon">◔</span><span>메뉴 금액 비례<small>주문 금액에 따라</small></span></button>
+          </div>
+          <div class="notice info-notice" id="split-notice" hidden></div>
+        </section>
+      </div>
+
+      <aside class="result-column">
+        <section class="result-card" aria-labelledby="result-title">
+          <div class="result-top"><div class="step-label light"><span>03</span> 정산 결과</div><span class="live-badge"><i></i> 실시간 계산</span></div>
+          <h2 id="result-title">이렇게 보내면 돼요</h2>
+          <p class="result-description">각자 부담할 금액을 확인해 주세요.</p>
+          <div class="result-list" id="result-list"></div>
+          <div class="total-box"><span>총 결제 금액</span><strong id="grand-total">0원</strong><small id="total-breakdown">메뉴 0원 · 배달비 0원 · 할인 0원</small></div>
+        </section>
+
+        <section class="panel message-panel" aria-labelledby="message-title">
+          <div class="section-heading"><div class="step-label"><span>04</span> 공유하기</div><span class="optional-label">계좌 정보는 선택</span></div>
+          <div class="heading-row"><div><h2 id="message-title">정산 메시지</h2><p>계좌를 적으면 메시지에 함께 표시돼요.</p></div></div>
+          <div class="bank-grid">
+            <label class="field"><span>은행명</span><input id="bank-name" type="text" maxlength="15" placeholder="예: 국민은행" /></label>
+            <label class="field"><span>예금주</span><input id="account-owner" type="text" maxlength="15" placeholder="예: 김민준" /></label>
+            <label class="field account-field"><span>계좌번호</span><input id="account-number" type="text" maxlength="30" placeholder="숫자와 하이픈(-)" /></label>
+          </div>
+          <label class="field message-field"><span>메시지 미리보기 <small>직접 수정할 수 있어요</small></span><textarea id="message-preview" maxlength="1000" rows="8" spellcheck="false"></textarea></label>
+          <div class="copy-error" id="copy-error" role="alert" hidden></div>
+          <button type="button" class="copy-button" id="copy-button"><span class="copy-icon">▢</span><span>정산 메시지 복사하기</span><span class="button-arrow">↗</span></button>
+          <p class="copy-caption">복사 후 카카오톡에 바로 붙여넣을 수 있어요.</p>
+        </section>
+      </aside>
+    </div>
+    <footer><span class="footer-mark">h</span> 따뜻한 한 끼, 깔끔한 정산 <span>·</span> 입력 내용은 이 기기에 저장되지 않아요.</footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite">✓ 정산 메시지가 복사되었어요</div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,2 +1,2 @@
-# Introduction-Artificial-Intelligence
-file
+# 인공지능입문 프로젝트
+한끼정산(N빵 정산기)
